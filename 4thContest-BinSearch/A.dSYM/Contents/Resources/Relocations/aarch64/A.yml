@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/lkey/Programming/AlgoCourse/4thContest-BinSearch/A'
+relocations:     []
+...
