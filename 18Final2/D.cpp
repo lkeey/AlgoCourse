@@ -1,51 +1,49 @@
 #include <iostream>
-#include <cmath>
+#include <vector>
 using namespace std;
 
-// Function to check if a number is prime
-bool isPrime(long long n) {
-    if (n <= 1) return false;
-    if (n <= 3) return true;
-    if (n % 2 == 0 || n % 3 == 0) return false;
-    
-    // Check for divisors from 5 to sqrt(n)
-    for (long long i = 5; i * i <= n; i += 6) {
-        if (n % i == 0 || n % (i + 2) == 0) {
-            return false;
-        }
-    }
-    return true;
-}
-
-// Function to check if a number is T-prime
-bool isTPrime(long long x) {
-    // A number is T-prime if it's a square of a prime number
-    // First check if x is a perfect square
-    long long sqrtX = sqrt(x);
-    
-    // Check if sqrtX is actually the square root of x
-    if (sqrtX * sqrtX != x) {
-        return false;
-    }
-    
-    // Check if the square root is a prime number
-    return isPrime(sqrtX);
-}
-
 int main() {
-    long long n;
+    int n;
     cin >> n;
     
-    for (long long i = 0; i < n; i++) {
-        long long x;
-        cin >> x;
-        
-        if (isTPrime(x)) {
-            cout << "YES" << endl;
-        } else {
-            cout << "NO" << endl;
-        }
+    vector<long long> counts(n);
+    for (int i = 0; i < n; i++) {
+        cin >> counts[i];
     }
+    
+    // For small n, use direct approach
+    if (n < 3) {
+        cout << 0 << endl;
+        return 0;
+    }
+    
+    if (n <= 100) {
+        // For small n, direct computation is fine
+        long long result = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                for (int k = j + 1; k < n; k++) {
+                    result += counts[i] * counts[j] * counts[k];
+                }
+            }
+        }
+        cout << result << endl;
+        return 0;
+    }
+    
+    // For larger n, use mathematical formula
+    // Sum of products taken 3 at a time = (S1^3 - 3*S1*S2 + 2*S3) / 6
+    // where S1 = sum of elements, S2 = sum of squares, S3 = sum of cubes
+    
+    long long S1 = 0, S2 = 0, S3 = 0;
+    for (int i = 0; i < n; i++) {
+        S1 += counts[i];
+        S2 += counts[i] * counts[i];
+        S3 += counts[i] * counts[i] * counts[i];
+    }
+    
+    long long result = (S1 * S1 * S1 - 3 * S1 * S2 + 2 * S3) / 6;
+    cout << result << endl;
     
     return 0;
 }

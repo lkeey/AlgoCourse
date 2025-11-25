@@ -11,22 +11,19 @@ int main() {
         cin >> nums[i];
 
     int su = 0;
-    // считаем сумму первых k элементов
-    for (int i = 0; i < k; i++)
+    for (int i = 0; i <= k; i++)
         su += nums[i];
 
-    // проверяем первый отрезок
     if (su == m) {
-        cout << k;
+        cout << 1;
         return 0;
     }
 
-    // скользящее окно
-    for (int i = k; i < n; i++) {
-        su += nums[i];        // добавляем новый элемент
-        su -= nums[i - k];    // убираем старый
+    for (int i = k + 1; i < n; i++) {
+        su += nums[i];
+        su -= nums[i - k - 1];
         if (su == m) {
-            cout << i + 1;    // индекс последнего элемента окна
+            cout << i - k;
             return 0;
         }
     }
